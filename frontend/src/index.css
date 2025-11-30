@@ -24,39 +24,7 @@
     background-attachment: fixed;
     color: #FFFFFF;
     position: relative;
-    transition: background 0.5s ease;
-    /* Default purple theme */
-    background: linear-gradient(135deg, #46178F 0%, #2D0F5C 50%, #5A1FB3 100%);
-  }
-
-  /* Theme backgrounds */
-  html[data-theme="purple"] body,
-  body[data-theme="purple"] {
-    background: linear-gradient(135deg, #46178F 0%, #2D0F5C 50%, #5A1FB3 100%) !important;
-  }
-
-  html[data-theme="ocean"] body,
-  body[data-theme="ocean"] {
-    background: linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%) !important;
-  }
-
-  html[data-theme="sunset"] body,
-  body[data-theme="sunset"] {
-    background: linear-gradient(135deg, #FF512F 0%, #DD2476 50%, #F09819 100%) !important;
-  }
-
-  html[data-theme="forest"] body,
-  body[data-theme="forest"] {
-    background: linear-gradient(135deg, #134E5E 0%, #71B280 50%, #0F4C3A 100%) !important;
-  }
-
-  html[data-theme="midnight"] body,
-  body[data-theme="midnight"] {
-    background: linear-gradient(135deg, #000428 0%, #004e92 50%, #1a237e 100%) !important;
-  }
-
-  html[data-theme="space"] body,
-  body[data-theme="space"] {
+    /* Default black theme */
     background: #000000 !important;
   }
 
@@ -339,5 +307,51 @@
     50% {
       opacity: 1;
     }
+  }
+
+  /* 3D Transform utilities for EventBox logo */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .rotateY-12 {
+    transform: rotateY(12deg);
+  }
+
+  .rotateX-12 {
+    transform: rotateX(12deg);
+  }
+
+  .rotateY-45 {
+    transform: rotateY(45deg);
+  }
+
+  .rotateX-45 {
+    transform: rotateX(45deg);
+  }
+
+  .skew-y-12 {
+    transform: skewY(12deg);
+  }
+
+  .skew-x-12 {
+    transform: skewX(12deg);
+  }
+
+  /* 3D preserve and combined transforms for logo faces */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .logo-front-face {
+    transform: perspective(1000px) rotateY(12deg) rotateX(12deg);
+  }
+
+  .logo-right-face {
+    transform: perspective(1000px) rotateY(45deg) skewY(12deg);
+  }
+
+  .logo-top-face {
+    transform: perspective(1000px) rotateX(45deg) skewX(12deg);
   }
 }

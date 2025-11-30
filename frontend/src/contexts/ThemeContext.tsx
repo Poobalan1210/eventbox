@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type ThemeType = 'purple' | 'space';
+export type ThemeType = 'space';
 
 export interface ThemeColors {
   navBg: string;
@@ -17,30 +17,16 @@ export interface ThemeColors {
 
 interface ThemeContextType {
   theme: ThemeType;
-  setTheme: (theme: ThemeType) => void;
   colors: ThemeColors;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const themeBackgrounds = {
-  purple: 'linear-gradient(135deg, #46178F 0%, #2D0F5C 50%, #5A1FB3 100%)',
   space: '#000000',
 };
 
 const themeColors: Record<ThemeType, ThemeColors> = {
-  purple: {
-    navBg: 'rgba(70, 23, 143, 0.95)',
-    navBgDark: 'rgba(45, 15, 92, 0.95)',
-    navText: 'rgba(255, 255, 255, 0.9)',
-    navTextHover: '#FFA602',
-    navBorder: 'rgba(255, 166, 2, 1)',
-    cardBg: 'rgba(255, 255, 255, 0.1)',
-    cardBorder: 'rgba(255, 255, 255, 0.2)',
-    textPrimary: '#FFFFFF',
-    textSecondary: 'rgba(255, 255, 255, 0.8)',
-    accent: '#FFA602',
-  },
   space: {
     navBg: 'rgba(15, 12, 41, 0.8)',
     navBgDark: 'rgba(9, 10, 15, 0.9)',
@@ -64,30 +50,17 @@ function createStarfieldOverlay() {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<ThemeType>(() => {
-    const saved = localStorage.getItem('quiz-theme');
-    // Validate saved theme
-    if (saved === 'purple' || saved === 'space') {
-      return saved;
-    }
-    // Default to purple for any invalid value
-    return 'purple';
-  });
+  const theme: ThemeType = 'space';
 
-  const colors = themeColors[theme] || themeColors.purple;
+  const colors = themeColors[theme] || themeColors.space;
 
   useEffect(() => {
-    // Clean up old theme values on first load
-    const saved = localStorage.getItem('quiz-theme');
-    if (saved && saved !== 'purple' && saved !== 'space') {
-      localStorage.removeItem('quiz-theme');
-    }
-    
-    localStorage.setItem('quiz-theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
+    // Always use space theme
+    localStorage.setItem('quiz-theme', 'space');
+    document.documentElement.setAttribute('data-theme', 'space');
     
     if (document.body) {
-      document.body.setAttribute('data-theme', theme);
+      document.body.setAttribute('data-theme', 'space');
       
       // Remove existing theme overlays
       const existingOverlay = document.getElementById('theme-overlay');
@@ -95,27 +68,19 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         existingOverlay.remove();
       }
       
-      // Apply background directly to body
-      const background = themeBackgrounds[theme];
-      document.body.style.background = background;
+      // Apply black background directly to body
+      document.body.style.background = '#000000';
       document.body.style.backgroundAttachment = 'fixed';
       
-      // Add special effects for space theme
-      if (theme === 'space') {
-        createStarfieldOverlay();
-        document.body.style.backgroundSize = 'auto';
-        document.body.style.animation = 'none';
-      }
-      // No animation for purple theme
-      else {
-        document.body.style.backgroundSize = 'auto';
-        document.body.style.animation = 'none';
-      }
+      // Add starfield overlay for space theme
+      createStarfieldOverlay();
+      document.body.style.backgroundSize = 'auto';
+      document.body.style.animation = 'none';
     }
   }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, colors }}>
+    <ThemeContext.Provider value={{ theme, colors }}>
       {children}
     </ThemeContext.Provider>
   );

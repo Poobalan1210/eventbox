@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import GamePINInput from '../components/GamePINInput';
+import EventBoxLogo from '../components/EventBoxLogo';
 
 export default function Home() {
   const [showPinInput, setShowPinInput] = useState(false);
@@ -44,25 +45,9 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="flex justify-center mb-6">
-              <motion.div
-                animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 5, -5, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatType: 'reverse',
-                }}
-                className="text-6xl sm:text-7xl md:text-8xl"
-              >
-                📦
-              </motion.div>
+            <div className="flex justify-center mb-8">
+              <EventBoxLogo size="xl" animated={true} showText={true} />
             </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-              Event Box
-            </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
               Create interactive events that engage your audience with 
               <span className="text-answer-yellow font-semibold"> quizzes</span>,

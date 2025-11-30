@@ -4,6 +4,7 @@ import { useWebSocket } from '../contexts/WebSocketContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useActiveQuizzes } from '../hooks/useActiveQuizzes';
 import ReconnectionBanner from './ReconnectionBanner';
+import EventBoxLogo from './EventBoxLogo';
 
 interface LayoutProps {
   children: ReactNode;
@@ -13,7 +14,7 @@ export default function Layout({ children }: LayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { connectionStatus } = useWebSocket();
-  const { theme, setTheme, colors } = useTheme();
+  const { colors } = useTheme();
   
   // Track active quizzes for notification badge
   // Using a demo organizerId - in production this would come from auth context
@@ -21,10 +22,6 @@ export default function Layout({ children }: LayoutProps) {
 
   const isActive = (path: string) => {
     return location.pathname === path;
-  };
-
-  const toggleTheme = () => {
-    setTheme(theme === 'purple' ? 'space' : 'purple');
   };
 
   return (
@@ -41,16 +38,8 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <Link 
-                  to="/" 
-                  className="text-xl font-bold transition-colors"
-                  style={{ 
-                    color: colors.navText,
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = colors.navTextHover}
-                  onMouseLeave={(e) => e.currentTarget.style.color = colors.navText}
-                >
-                  📦 Event Box
+                <Link to="/" className="transition-all hover:scale-105">
+                  <EventBoxLogo size="sm" animated={false} showText={true} />
                 </Link>
               </div>
               {/* Desktop Navigation */}
@@ -81,20 +70,6 @@ export default function Layout({ children }: LayoutProps) {
                   Create Event
                 </Link>
               </div>
-            </div>
-            {/* Theme Toggle */}
-            <div className="flex items-center">
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg transition-all hover:scale-110"
-                style={{ 
-                  color: colors.navText,
-                  backgroundColor: colors.navBg,
-                }}
-                title={theme === 'purple' ? 'Switch to Space theme' : 'Switch to Purple theme'}
-              >
-                {theme === 'purple' ? '🌌' : '🎯'}
-              </button>
             </div>
             {/* Mobile menu button */}
             <div className="flex items-center sm:hidden">

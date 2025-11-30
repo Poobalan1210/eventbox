@@ -1,0 +1,12 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 3D Cube Effect -->
+  <!-- Bottom face -->
+  <rect x="4" y="4" width="20" height="20" rx="3" fill="#1e40af" opacity="0.6" transform="translate(4 4)"/>
+  <!-- Side face -->
+  <rect x="2" y="2" width="20" height="20" rx="3" fill="#2563eb" opacity="0.8" transform="translate(2 2)"/>
+  <!-- Main face -->
+  <rect x="0" y="0" width="20" height="20" rx="3" fill="#3b82f6"/>
+  
+  <!-- EB Text -->
+  <text x="10" y="14" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">EB</text>
+</svg>
