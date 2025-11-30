@@ -1,0 +1,53 @@
+{
+  "name": "live-quiz-event",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "infrastructure"
+  ],
+  "scripts": {
+    "dev": "npm run dev:local",
+    "dev:local": "bash scripts/check-docker.sh && echo '🚀 Starting local development...' && npm run db:start && npm run setup:local-db && concurrently -n \"backend,frontend\" -c \"blue,green\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "db:start": "docker-compose up -d && echo '⏳ Waiting for DynamoDB to be ready...' && sleep 3",
+    "db:stop": "docker-compose down",
+    "db:admin": "open http://localhost:8001",
+    "setup:local-db": "ts-node scripts/setup-local-db.ts",
+    "setup:local-db:recreate": "ts-node scripts/setup-local-db.ts --recreate",
+    "migrate": "ts-node scripts/migrate-events.ts",
+    "migrate:verify": "ts-node scripts/migrate-events.ts verify",
+    "migrate:rollback": "ts-node scripts/rollback-migration.ts",
+    "migrate:test": "ts-node scripts/test-migration.ts",
+    "migrate:test:verify": "ts-node scripts/test-migration.ts --verify",
+    "migrate:activities": "ts-node --project scripts/tsconfig.json scripts/migrate-to-activities.ts",
+    "migrate:activities:verify": "ts-node --project scripts/tsconfig.json scripts/migrate-to-activities.ts verify",
+    "migrate:activities:rollback": "ts-node --project scripts/tsconfig.json scripts/rollback-activity-migration.ts",
+    "test:activities-migration": "ts-node --project scripts/tsconfig.json scripts/test-activities-migration.ts",
+    "test:data-migration": "ts-node --project scripts/tsconfig.json scripts/test-data-migration.ts",
+    "test:rollback": "ts-node --project scripts/tsconfig.json scripts/test-rollback.ts",
+    "verify:migration": "ts-node --project scripts/tsconfig.json scripts/verify-migration.ts",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend",
+    "build:infrastructure": "npm run build --workspace=infrastructure",
+    "deploy:infrastructure": "npm run deploy --workspace=infrastructure",
+    "deploy:backend": "infrastructure/scripts/deploy-backend.sh",
+    "deploy:frontend": "infrastructure/scripts/deploy-frontend.sh",
+    "deploy:all": "infrastructure/scripts/deploy-all.sh",
+    "deploy:dev": "infrastructure/scripts/deploy-all.sh development",
+    "deploy:staging": "infrastructure/scripts/deploy-all.sh staging",
+    "deploy:prod": "infrastructure/scripts/deploy-all.sh production",
+    "build:push": "infrastructure/scripts/build-and-push.sh",
+    "invalidate:cloudfront": "infrastructure/scripts/invalidate-cloudfront.sh",
+    "lint": "npm run lint --workspaces",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\""
+  },
+  "devDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.470.0",
+    "concurrently": "^8.2.2",
+    "prettier": "^3.1.0",
+    "ts-node": "^10.9.2"
+  }
+}

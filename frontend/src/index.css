@@ -1,0 +1,343 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Ensure proper box-sizing for all elements */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Prevent horizontal scrolling */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-attachment: fixed;
+    color: #FFFFFF;
+    position: relative;
+    transition: background 0.5s ease;
+    /* Default purple theme */
+    background: linear-gradient(135deg, #46178F 0%, #2D0F5C 50%, #5A1FB3 100%);
+  }
+
+  /* Theme backgrounds */
+  html[data-theme="purple"] body,
+  body[data-theme="purple"] {
+    background: linear-gradient(135deg, #46178F 0%, #2D0F5C 50%, #5A1FB3 100%) !important;
+  }
+
+  html[data-theme="ocean"] body,
+  body[data-theme="ocean"] {
+    background: linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%) !important;
+  }
+
+  html[data-theme="sunset"] body,
+  body[data-theme="sunset"] {
+    background: linear-gradient(135deg, #FF512F 0%, #DD2476 50%, #F09819 100%) !important;
+  }
+
+  html[data-theme="forest"] body,
+  body[data-theme="forest"] {
+    background: linear-gradient(135deg, #134E5E 0%, #71B280 50%, #0F4C3A 100%) !important;
+  }
+
+  html[data-theme="midnight"] body,
+  body[data-theme="midnight"] {
+    background: linear-gradient(135deg, #000428 0%, #004e92 50%, #1a237e 100%) !important;
+  }
+
+  html[data-theme="space"] body,
+  body[data-theme="space"] {
+    background: #000000 !important;
+  }
+
+  /* Fun background pattern overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Responsive typography base */
+  html {
+    font-size: 16px;
+  }
+}
+
+@layer utilities {
+  /* Mode transition animations */
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+      transform: translateX(5px);
+    }
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s ease-out;
+  }
+
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+  }
+}
+
+@layer utilities {
+  /* Minimum touch target utility */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent text overflow */
+  .text-wrap-balance {
+    text-wrap: balance;
+  }
+
+  /* Animation delays for loading indicators */
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
+
+  /* Safe area padding for mobile devices with notches */
+  .safe-area-inset {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Kahoot-style question text */
+  .question-text {
+    @apply text-question-mobile sm:text-question text-white font-bold leading-tight;
+  }
+
+  /* Kahoot-style answer text */
+  .answer-text {
+    @apply text-answer-mobile sm:text-answer text-white font-semibold;
+  }
+
+  /* Enhanced mobile spacing */
+  .mobile-spacing {
+    @apply px-4 py-3 sm:px-6 sm:py-4;
+  }
+
+  /* Card with consistent padding */
+  .card-padding {
+    @apply p-6 sm:p-8;
+  }
+
+  /* Fun gradient backgrounds */
+  .gradient-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Playful hover effect */
+  .playful-hover {
+    transition: all 0.3s ease;
+  }
+
+  .playful-hover:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Animated gradient border */
+  @keyframes gradient-border {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animated-border {
+    position: relative;
+    background: linear-gradient(90deg, #E21B3C, #1368CE, #FFA602, #26890C, #9C27B0);
+    background-size: 200% 200%;
+    animation: gradient-border 3s ease infinite;
+  }
+
+  /* Floating animation for icons */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .float-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Pulse glow effect */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(255, 166, 2, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(255, 166, 2, 0.8);
+    }
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Pulse border effect for live quizzes */
+  @keyframes pulse-border {
+    0%, 100% {
+      border-color: rgba(239, 68, 68, 0.6);
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+    }
+    50% {
+      border-color: rgba(239, 68, 68, 1);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+    }
+  }
+
+  .animate-pulse-border {
+    animation: pulse-border 2s ease-in-out infinite;
+  }
+
+  /* Animated gradient background for themes */
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* CSS-only starfield for space theme */
+  .space-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .space-stars::before,
+  .space-stars::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    box-shadow: 
+      /* Layer 1 - Small stars */
+      1000px 1800px #FFF, 1200px 900px #FFF, 800px 1600px #FFF, 1600px 1400px #FFF,
+      400px 600px #FFF, 1800px 200px #FFF, 200px 1200px #FFF, 1400px 400px #FFF,
+      600px 1000px #FFF, 1000px 400px #FFF, 1400px 1800px #FFF, 200px 400px #FFF,
+      800px 800px #FFF, 1600px 600px #FFF, 400px 1400px #FFF, 1200px 1600px #FFF,
+      /* Layer 2 - More stars */
+      300px 500px #FFF, 1500px 1100px #FFF, 700px 1300px #FFF, 1100px 700px #FFF,
+      500px 1500px #FFF, 1700px 300px #FFF, 900px 1700px #FFF, 1300px 900px #FFF,
+      100px 1100px #FFF, 1900px 500px #FFF, 500px 100px #FFF, 1100px 1900px #FFF,
+      700px 300px #FFF, 1500px 1500px #FFF, 300px 700px #FFF, 1700px 1300px #FFF,
+      /* Layer 3 - Even more stars */
+      250px 750px #FFF, 1450px 950px #FFF, 650px 1450px #FFF, 1050px 650px #FFF,
+      450px 1650px #FFF, 1850px 250px #FFF, 850px 1850px #FFF, 1250px 850px #FFF,
+      50px 1050px #FFF, 1950px 450px #FFF, 550px 50px #FFF, 1150px 1950px #FFF,
+      750px 250px #FFF, 1550px 1550px #FFF, 350px 750px #FFF, 1750px 1350px #FFF;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+
+  .space-stars::after {
+    width: 3px;
+    height: 3px;
+    box-shadow: 
+      /* Larger, brighter stars */
+      500px 500px rgba(255,255,255,0.9), 1500px 1500px rgba(255,255,255,0.9),
+      1000px 1000px rgba(255,255,255,0.9), 200px 1800px rgba(255,255,255,0.9),
+      1800px 200px rgba(255,255,255,0.9), 800px 1200px rgba(255,255,255,0.9),
+      1200px 800px rgba(255,255,255,0.9), 400px 1400px rgba(255,255,255,0.9),
+      1400px 400px rgba(255,255,255,0.9), 600px 1600px rgba(255,255,255,0.9),
+      1600px 600px rgba(255,255,255,0.9), 300px 900px rgba(255,255,255,0.9),
+      900px 300px rgba(255,255,255,0.9), 1700px 1100px rgba(255,255,255,0.9),
+      1100px 1700px rgba(255,255,255,0.9), 700px 700px rgba(255,255,255,0.9);
+    animation: twinkle 4s ease-in-out infinite reverse;
+  }
+
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "timestamp": "2025-11-29T18:53:15.662Z",
+  "success": true,
+  "summary": {
+    "totalEvents": 3,
+    "totalActivities": 3,
+    "totalQuestions": 0,
+    "eventsWithActivities": 3,
+    "eventsWithoutActivities": 0,
+    "questionsWithActivityId": 0,
+    "questionsWithoutActivityId": 0,
+    "orphanedQuestions": 0,
+    "eventsWithActiveActivityId": 3,
+    "eventsWithoutActiveActivityId": 0
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "type": "QUIZ_WITHOUT_QUESTIONS",
+      "message": "Event test-migration-3 has quiz activity but no questions",
+      "details": {
+        "eventId": "test-migration-3",
+        "eventName": "Test Event 3",
+        "activityCount": 1
+      }
+    },
+    {
+      "type": "QUIZ_WITHOUT_QUESTIONS",
+      "message": "Event test-migration-1 has quiz activity but no questions",
+      "details": {
+        "eventId": "test-migration-1",
+        "eventName": "Test Event 1",
+        "activityCount": 1
+      }
+    },
+    {
+      "type": "QUIZ_WITHOUT_QUESTIONS",
+      "message": "Event test-migration-2 has quiz activity but no questions",
+      "details": {
+        "eventId": "test-migration-2",
+        "eventName": "Test Event 2",
+        "activityCount": 1
+      }
+    }
+  ],
+  "details": {
+    "eventsWithoutActivities": [],
+    "questionsWithoutActivityId": [],
+    "orphanedQuestions": [],
+    "invalidActivityReferences": []
+  }
+}
