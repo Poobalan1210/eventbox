@@ -149,6 +149,123 @@ export class LiveQuizEventStack extends cdk.Stack {
     });
 
     // ========================================
+    // Activity System Tables (Import Existing)
+    // ========================================
+    // Note: These tables were created manually and are imported here
+    // to allow CDK to manage permissions without recreating them.
+    // For fresh deployments, uncomment the table creation code below.
+
+    // Import existing Activities Table
+    const activitiesTable = dynamodb.Table.fromTableName(
+      this,
+      'ActivitiesTable',
+      'Activities'
+    );
+
+    // Import existing Poll Votes Table
+    const pollVotesTable = dynamodb.Table.fromTableName(
+      this,
+      'PollVotesTable',
+      'PollVotes'
+    );
+
+    // Import existing Raffle Entries Table
+    const raffleEntriesTable = dynamodb.Table.fromTableName(
+      this,
+      'RaffleEntriesTable',
+      'RaffleEntries'
+    );
+
+    /* 
+    // ========================================
+    // For Fresh Deployments - Uncomment Below
+    // ========================================
+    // If deploying to a new environment, comment out the imports above
+    // and uncomment the table creation code below:
+
+    // Activities Table - Stores quiz, poll, and raffle activities
+    const activitiesTable = new dynamodb.Table(this, 'ActivitiesTable', {
+      tableName: 'Activities',
+      partitionKey: {
+        name: 'eventId',
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: 'activityId',
+        type: dynamodb.AttributeType.STRING,
+      },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      pointInTimeRecovery: true,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+    });
+
+    // Add GSI for querying activities by event
+    activitiesTable.addGlobalSecondaryIndex({
+      indexName: 'EventActivities',
+      partitionKey: {
+        name: 'eventId',
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    // Poll Votes Table - Stores votes for poll activities
+    const pollVotesTable = new dynamodb.Table(this, 'PollVotesTable', {
+      tableName: 'PollVotes',
+      partitionKey: {
+        name: 'pollId',
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: 'participantId',
+        type: dynamodb.AttributeType.STRING,
+      },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      pointInTimeRecovery: true,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+    });
+
+    // Add GSI for querying all votes for a poll
+    pollVotesTable.addGlobalSecondaryIndex({
+      indexName: 'PollVotes',
+      partitionKey: {
+        name: 'pollId',
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+
+    // Raffle Entries Table - Stores entries for raffle activities
+    const raffleEntriesTable = new dynamodb.Table(this, 'RaffleEntriesTable', {
+      tableName: 'RaffleEntries',
+      partitionKey: {
+        name: 'raffleId',
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: 'participantId',
+        type: dynamodb.AttributeType.STRING,
+      },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      pointInTimeRecovery: true,
+      encryption: dynamodb.TableEncryption.AWS_MANAGED,
+    });
+
+    // Add GSI for querying all entries for a raffle
+    raffleEntriesTable.addGlobalSecondaryIndex({
+      indexName: 'RaffleEntries',
+      partitionKey: {
+        name: 'raffleId',
+        type: dynamodb.AttributeType.STRING,
+      },
+      projectionType: dynamodb.ProjectionType.ALL,
+    });
+    */
+
+    // ========================================
     // S3 Bucket for Frontend
     // ========================================
 
@@ -371,6 +488,9 @@ export class LiveQuizEventStack extends cdk.Stack {
     participantsTable.grantReadWriteData(taskRole);
     answersTable.grantReadWriteData(taskRole);
     gamePinsTable.grantReadWriteData(taskRole);
+    activitiesTable.grantReadWriteData(taskRole);
+    pollVotesTable.grantReadWriteData(taskRole);
+    raffleEntriesTable.grantReadWriteData(taskRole);
 
     // Grant S3 permissions to task role for question images
     questionImagesBucket.grantReadWrite(taskRole);
@@ -412,6 +532,9 @@ export class LiveQuizEventStack extends cdk.Stack {
         PARTICIPANTS_TABLE_NAME: participantsTable.tableName,
         ANSWERS_TABLE_NAME: answersTable.tableName,
         GAME_PINS_TABLE_NAME: gamePinsTable.tableName,
+        ACTIVITIES_TABLE: activitiesTable.tableName,
+        POLL_VOTES_TABLE: pollVotesTable.tableName,
+        RAFFLE_ENTRIES_TABLE: raffleEntriesTable.tableName,
         QUESTION_IMAGES_BUCKET: questionImagesBucket.bucketName,
         CLOUDFRONT_IMAGES_URL: `https://${imagesDistribution.distributionDomainName}`,
         PORT: '3000',
@@ -479,8 +602,8 @@ export class LiveQuizEventStack extends cdk.Stack {
       targetGroupName: 'websocket-tg',
     });
 
-    // Enable connection draining for WebSocket
-    targetGroup.setAttribute('deregistration_delay.connection_termination.enabled', 'true');
+    // Note: Connection termination attribute is only supported for TCP/UDP target groups
+    // For HTTP target groups, deregistration delay is sufficient for graceful shutdown
 
     // ========================================
     // Outputs
@@ -568,6 +691,24 @@ export class LiveQuizEventStack extends cdk.Stack {
       value: gamePinsTable.tableName,
       description: 'DynamoDB GamePins table name',
       exportName: 'LiveQuizGamePinsTable',
+    });
+
+    new cdk.CfnOutput(this, 'ActivitiesTableName', {
+      value: activitiesTable.tableName,
+      description: 'DynamoDB Activities table name',
+      exportName: 'LiveQuizActivitiesTable',
+    });
+
+    new cdk.CfnOutput(this, 'PollVotesTableName', {
+      value: pollVotesTable.tableName,
+      description: 'DynamoDB PollVotes table name',
+      exportName: 'LiveQuizPollVotesTable',
+    });
+
+    new cdk.CfnOutput(this, 'RaffleEntriesTableName', {
+      value: raffleEntriesTable.tableName,
+      description: 'DynamoDB RaffleEntries table name',
+      exportName: 'LiveQuizRaffleEntriesTable',
     });
   }
 }
