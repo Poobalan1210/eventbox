@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PollActivity, PollOption } from '../types/models';
-import { UpdateActivityRequest } from '../types/api';
+// import { UpdateActivityRequest } from '../types/api';
 import { useTheme } from '../contexts/ThemeContext';
 
 interface PollActivityConfigProps {

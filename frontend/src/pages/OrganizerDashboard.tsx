@@ -69,10 +69,11 @@ export default function OrganizerDashboard() {
       }
 
       const data: EventListResponse = await response.json();
+      const quizzes = data.quizzes || [];
       
       // Transform events to EventCardData format
       const eventCards: EventCardData[] = await Promise.all(
-        data.quizzes.map(async (event) => {
+        quizzes.map(async (event) => {
           // Fetch activities for each event to get activity count
           try {
             const activitiesResponse = await fetch(

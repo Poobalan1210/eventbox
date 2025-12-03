@@ -28,7 +28,8 @@ export function useActiveQuizzes(organizerId: string) {
       if (!response.ok) return;
 
       const data = await response.json();
-      const liveQuizzes = data.quizzes
+      const quizzes = data.quizzes || [];
+      const liveQuizzes = quizzes
         .filter((quiz: any) => quiz.status === 'live')
         .map((quiz: any) => ({
           eventId: quiz.eventId,

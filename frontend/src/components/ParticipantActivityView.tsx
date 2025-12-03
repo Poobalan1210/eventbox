@@ -1072,18 +1072,6 @@ function RaffleActivityView({
             </div>
           )}
 
-          {/* Debug button */}
-          {!hasEntered && !showWinners && !isDrawing && (
-            <div className="mb-4">
-              <button
-                onClick={handleEnter}
-                className="w-full py-3 bg-yellow-600 text-white rounded-lg font-medium"
-              >
-                🔧 Debug: Enter Raffle (Participant: {participantName})
-              </button>
-            </div>
-          )}
-
           {/* Entry button */}
           {!hasEntered && !showWinners && !isDrawing && (
             <motion.button

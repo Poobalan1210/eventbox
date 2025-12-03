@@ -2,7 +2,7 @@
  * GamePinRepository - Data access layer for GamePin operations
  */
 import { PutCommand, GetCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
-import { docClient, TABLE_NAMES } from '../client';
+import { docClient, TABLE_NAMES } from '../client.js';
 import { GamePin } from '../../types/models';
 
 /**

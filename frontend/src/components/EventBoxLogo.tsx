@@ -13,6 +13,7 @@ export default function EventBoxLogo({
   showText = true,
   className = '' 
 }: EventBoxLogoProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-12 h-12',

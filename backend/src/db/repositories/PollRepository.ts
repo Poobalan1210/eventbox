@@ -5,7 +5,7 @@ import {
   PutCommand,
   QueryCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { docClient, TABLE_NAMES } from '../client';
+import { docClient, TABLE_NAMES } from '../client.js';
 import { PollVote, PollOption } from '../../types/models';
 
 /**

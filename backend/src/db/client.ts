@@ -25,11 +25,11 @@ export const docClient = DynamoDBDocumentClient.from(client, {
 
 // Table names from environment variables with defaults
 export const TABLE_NAMES = {
-  EVENTS: process.env.EVENTS_TABLE || 'Events',
-  QUESTIONS: process.env.QUESTIONS_TABLE || 'Questions',
-  PARTICIPANTS: process.env.PARTICIPANTS_TABLE || 'Participants',
-  ANSWERS: process.env.ANSWERS_TABLE || 'Answers',
-  GAME_PINS: process.env.GAME_PINS_TABLE || 'GamePins',
+  EVENTS: process.env.EVENTS_TABLE_NAME || process.env.EVENTS_TABLE || 'LiveQuizEvents',
+  QUESTIONS: process.env.QUESTIONS_TABLE_NAME || process.env.QUESTIONS_TABLE || 'LiveQuizQuestions',
+  PARTICIPANTS: process.env.PARTICIPANTS_TABLE_NAME || process.env.PARTICIPANTS_TABLE || 'LiveQuizParticipants',
+  ANSWERS: process.env.ANSWERS_TABLE_NAME || process.env.ANSWERS_TABLE || 'LiveQuizAnswers',
+  GAME_PINS: process.env.GAME_PINS_TABLE_NAME || process.env.GAME_PINS_TABLE || 'LiveQuizGamePins',
   ACTIVITIES: process.env.ACTIVITIES_TABLE || 'Activities',
   POLL_VOTES: process.env.POLL_VOTES_TABLE || 'PollVotes',
   RAFFLE_ENTRIES: process.env.RAFFLE_ENTRIES_TABLE || 'RaffleEntries',

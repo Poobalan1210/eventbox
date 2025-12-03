@@ -2,7 +2,7 @@
  * AnswerRepository - Data access layer for Answer operations
  */
 import { PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
-import { docClient, TABLE_NAMES } from '../client';
+import { docClient, TABLE_NAMES } from '../client.js';
 import { Answer } from '../../types/models';
 
 export class AnswerRepository {

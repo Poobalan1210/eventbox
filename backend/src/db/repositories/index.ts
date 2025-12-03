@@ -1,11 +1,11 @@
 /**
  * Repository exports for easy importing
  */
-export { EventRepository } from './EventRepository';
-export { QuestionRepository } from './QuestionRepository';
-export { ParticipantRepository } from './ParticipantRepository';
-export { AnswerRepository } from './AnswerRepository';
-export { GamePinRepository } from './GamePinRepository';
-export { ActivityRepository } from './ActivityRepository';
-export { PollRepository } from './PollRepository';
-export { RaffleRepository } from './RaffleRepository';
+export { EventRepository } from './EventRepository.js';
+export { QuestionRepository } from './QuestionRepository.js';
+export { ParticipantRepository } from './ParticipantRepository.js';
+export { AnswerRepository } from './AnswerRepository.js';
+export { GamePinRepository } from './GamePinRepository.js';
+export { ActivityRepository } from './ActivityRepository.js';
+export { PollRepository } from './PollRepository.js';
+export { RaffleRepository } from './RaffleRepository.js';

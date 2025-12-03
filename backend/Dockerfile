@@ -8,13 +8,16 @@ COPY package*.json ./
 COPY tsconfig.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Copy source code
 COPY src ./src
 
-# Build TypeScript
-RUN npm run build
+# Copy production tsconfig
+COPY tsconfig.prod.json ./
+
+# Build TypeScript (exclude test files)
+RUN npx tsc --project tsconfig.prod.json
 
 # Production stage
 FROM node:20-alpine
@@ -25,7 +28,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install production dependencies only
-RUN npm ci --only=production
+RUN npm install --only=production
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist

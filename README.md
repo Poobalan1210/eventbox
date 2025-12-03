@@ -1,255 +1,385 @@
-# Event Activities Platform
+# EventBox - Unified Event Engagement Platform
 
-A real-time interactive event platform where organizers can create events containing multiple activities (quizzes, polls, and raffles). Participants join events and interact with whichever activity the organizer activates.
+> **One platform, endless engagement.** Switch seamlessly between quizzes, polls, and raffles without losing your audience.
 
-## 🚀 New Here? Start Here!
 
-**→ [START_HERE.md](./START_HERE.md)** - Quick setup guide to get running in 3 steps!
 
-## Features
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](http://live-quiz-frontend-333105300941.s3-website-us-east-1.amazonaws.com)
+[![AWS](https://img.shields.io/badge/AWS-Powered-orange)](https://aws.amazon.com)
+[![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 
-### Core Features
-- 🎯 **Multi-Activity Events** - Create events with quizzes, polls, and raffles
-- 🎮 **Activity Control** - Organizers control which activity is active
-- 👥 **Real-time Participation** - Participants join events and see live updates
-- ⚡ **WebSocket Updates** - Instant feedback and synchronization
-- 📱 **Mobile-Responsive** - Works seamlessly on all devices
-- 🔗 **Easy Joining** - 6-digit game PINs for quick access
+---
 
-### Quiz Activities ✨
-- 🎨 **Colorful Answer Buttons** - Geometric shapes (triangle, diamond, circle, square)
-- ⚡ **Speed-Based Scoring** - 500-1000 points based on answer speed
-- 📊 **Answer Statistics** - Bar charts showing answer distribution
-- 🏆 **Podium Display** - Celebratory top 3 visualization
-- 🖼️ **Question Images** - Upload and display images in questions
-- 🔥 **Answer Streaks** - Track consecutive correct answers
-- 📊 **Real-time Leaderboard** - Live score updates
+## 📖 Table of Contents
 
-### Poll Activities 📊
-- 🗳️ **Interactive Voting** - Single or multiple choice polls
-- 📈 **Live Results** - Real-time vote count updates
-- 🎯 **Flexible Options** - Configure any number of voting options
-- 📊 **Results Visualization** - Clear display of voting outcomes
+- [The Problem](#-the-problem)
+- [The Solution](#-the-solution)
+- [Key Features](#-key-features)
+- [Screenshots](#-screenshots)
+- [Quick Start](#-quick-start)
+- [Architecture](#-architecture)
+- [Technology Stack](#-technology-stack)
+- [Documentation](#-documentation)
+- [Development](#-development)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
 
-### Raffle Activities 🎁
-- 🎲 **Random Winner Selection** - Fair Fisher-Yates algorithm
-- 🎟️ **Entry Management** - Automatic or manual entry methods
-- 🏆 **Multiple Winners** - Draw multiple winners at once
-- 🎉 **Winner Announcements** - Celebratory winner reveals
+---
 
-### Organizer Experience 🎨
-- 📊 **Event Dashboard** - Manage all events in one place
-- 🎯 **Activity Management** - Create, configure, and control activities
-- 🔄 **Seamless Switching** - Switch between activities without participants leaving
-- 🔒 **Privacy Controls** - Private events with join codes
-- 📈 **Real-Time Monitoring** - See participant counts and activity status
+## 🎯 The Problem
 
-## Quick Start - Local Development
+Event organizers face a common challenge: **keeping audiences engaged throughout their events**. Currently, they're forced to juggle multiple platforms—one for quizzes, another for raffles, a third for polls—creating a disjointed experience that breaks the flow and loses audience attention.
+
+**What happens when:**
+- Your presentation runs short and you need to fill time?
+- The audience seems disengaged and you need an icebreaker?
+- Technical difficulties require a quick pivot to keep people entertained?
+
+---
+
+## ✨ The Solution
+
+**EventBox** is a unified platform where organizers can seamlessly switch between different engagement activities without losing their audience or breaking the experience flow.
+
+### Core Innovation: Event-Based Architecture
+
+Participants join an **event**, not individual activities. Once connected, organizers can instantly switch between:
+
+- 🎯 **Quizzes** - Interactive Q&A with real-time scoring
+- 📊 **Polls** - Instant audience feedback and voting
+- 🎁 **Raffles** - Prize drawings and giveaways
+
+**No page refreshes. No re-joining. No lost participants.**
+
+---
+
+## 🚀 Key Features
+
+### For Organizers
+
+#### 🎮 **Unified Event Management**
+- Create events with multiple pre-configured activities
+- Switch between activities instantly during live events
+- Monitor participant engagement in real-time
+- Control everything from a single dashboard
+
+![Organizer Dashboard](./screenshots/organizer-dashboard.png)
+
+
+#### 🎯 **Activity Control Panel**
+- See all activities for your event at a glance
+- Start, pause, or end activities with one click
+- View live participant counts
+- Switch activities seamlessly
+
+![Activity Control Panel](./screenshots/activity-control-panel.png)
+
+#### 📊 **Real-Time Monitoring**
+- See who's joined your event
+- Track participant responses live
+- View results as they come in
+- Export data for analysis
+
+![Live Monitoring](./screenshots/live-monitoring.png)
+
+### For Participants
+
+#### 📱 **Instant Joining**
+- Scan QR code or enter 6-digit PIN
+- Join from any device (phone, tablet, laptop)
+- No app download required
+- Works on any modern browser
+
+![Join Screen](./screenshots/join-screen.png)
+
+#### 🎨 **Beautiful, Intuitive Interface**
+- Mobile-first responsive design
+- Large, touch-friendly buttons
+- Smooth animations and transitions
+- Clear visual feedback
+
+![Participant View](./screenshots/participant-view.png)
+
+#### ⚡ **Real-Time Updates**
+- See new activities instantly (< 500ms)
+- Live score updates
+- Instant result reveals
+- No page refreshes needed
+
+---
+
+## 🎯 Activity Types
+
+### 1. Interactive Quizzes
+
+**Engage your audience with knowledge challenges**
+
+- ✅ Multiple choice questions with 2-4 options
+- 🎨 Colorful geometric answer buttons (triangle, diamond, circle, square)
+- ⚡ Speed-based scoring (500-1000 points)
+- 🖼️ Support for question images
+- 📊 Live leaderboard with rankings
+- 🏆 Podium display for top 3 winners
+- 🔥 Answer streak tracking
+- 📈 Answer distribution statistics
+
+![Quiz Interface](./screenshots/quiz-interface.png)
+
+![Quiz Leaderboard](./screenshots/quiz-leaderboard.png)
+
+![Quiz Results](./screenshots/quiz-results.png)
+
+### 2. Live Polls
+
+**Get instant feedback from your audience**
+
+- 🗳️ Single or multiple choice voting
+- 📊 Real-time vote count updates
+- 📈 Visual results with bar charts
+- 🎯 Unlimited voting options
+- 🔒 Results hidden until poll ends (configurable)
+- 📱 Mobile-optimized voting interface
+
+### 3. Prize Raffles
+
+**Create excitement with prize drawings**
+
+- 🎲 Fair random winner selection (Fisher-Yates algorithm)
+- 🎟️ Automatic or manual entry methods
+- 🏆 Support for multiple winners
+- 🎉 Animated winner reveals
+- 🎁 Prize description display
+- 📊 Entry tracking and management
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - Node.js 18+ and npm
 - Docker Desktop (for local DynamoDB)
 
-### Run Locally
+### Run Locally in 3 Steps
 
 1. **Start Docker Desktop** (make sure it's running)
 
-2. **Install dependencies:**
+2. **Install and start everything:**
    ```bash
    npm install
-   ```
-
-3. **Start everything with one command:**
-   ```bash
    npm run dev
    ```
 
-   This will:
-   - Start local DynamoDB in Docker
-   - Create all required database tables
-   - Start the backend server (port 3001)
-   - Start the frontend dev server (port 5173)
-
-4. **Open your browser:**
+3. **Open your browser:**
    ```
    http://localhost:5173
    ```
 
-5. **View your database (optional):**
-   ```
-   http://localhost:8001
-   ```
+That's it! You're ready to create your first event! 🎉
 
-That's it! You're ready to create your first quiz event! 🎉
+**Detailed Setup:** See [START_HERE.md](./START_HERE.md) for step-by-step instructions.
 
-### Manual Setup (Alternative)
+---
 
-If you prefer to run services separately:
+## 🏗️ Architecture
 
-```bash
-# 1. Start DynamoDB
-npm run db:start
+EventBox uses a modern, cloud-native architecture designed for real-time engagement:
 
-# 2. Create tables
-npm run setup:local-db
+![Architecture Diagram](./screenshots/architecture-diagram.png)
+*Screenshot 20: System architecture diagram*
 
-# 3. Start backend (in one terminal)
-npm run dev:backend
-
-# 4. Start frontend (in another terminal)
-npm run dev:frontend
-```
-
-## Project Structure
+### Cloud-Native Infrastructure
 
 ```
-.
-├── frontend/              # React + Vite frontend
-├── backend/               # Node.js + Express + Socket.io backend
-├── infrastructure/        # AWS CDK infrastructure code
-├── docker-compose.yml     # Local DynamoDB setup
-└── scripts/               # Utility scripts
+┌─────────────────────────────────────────────────────────────┐
+│                     CloudFront CDN                          │
+│                  (Global Distribution)                      │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+        ┌────────────┴────────────┐
+        │                         │
+┌───────▼────────┐       ┌───────▼────────┐
+│   S3 Bucket    │       │   ALB + ECS    │
+│   (Frontend)   │       │   (Backend)    │
+└────────────────┘       └───────┬────────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    │                         │
+            ┌───────▼────────┐       ┌───────▼────────┐
+            │   DynamoDB     │       │  WebSocket     │
+            │   (Database)   │       │  (Real-time)   │
+            └────────────────┘       └────────────────┘
 ```
 
-## Documentation
+### Key Components
 
-### 📚 API Documentation
-- **[Documentation Index](./API_DOCUMENTATION_INDEX.md)** - 📖 Start here! Complete documentation guide
-- **[API Documentation](./API_DOCUMENTATION.md)** - Complete REST API reference
-- **[API Quick Reference](./API_QUICK_REFERENCE.md)** - Quick lookups and examples
-- **[WebSocket Events Reference](./WEBSOCKET_EVENTS_REFERENCE.md)** - Real-time events guide
-- **[Migration Guide](./MIGRATION_GUIDE.md)** - Migrate from quiz-centric model
+- **Frontend**: React SPA served via CloudFront CDN
+- **Backend**: Node.js API on ECS Fargate (auto-scaling)
+- **Database**: DynamoDB for millisecond response times
+- **Real-time**: WebSocket connections for instant updates
+- **Media**: S3 + CloudFront for images and assets
 
-### Getting Started
-- **[START_HERE.md](./START_HERE.md)** - Quick 3-step setup guide
-- **[Local Development Guide](./LOCAL_DEVELOPMENT.md)** - Detailed local setup and development tips
+### Performance Metrics
 
-### Deployment & Testing
-- **[Phase 2 Quick Start](./PHASE2_QUICK_START.md)** - 🚀 Deploy Phase 2 in 3 steps!
-- **[Phase 2 Deployment Guide](./PHASE2_DEPLOYMENT_GUIDE.md)** - Complete Phase 2 deployment guide
-- **[Final Integration Guide](./FINAL_INTEGRATION_GUIDE.md)** - Complete testing and deployment walkthrough
-- **[Deployment Verification](./DEPLOYMENT_VERIFICATION.md)** - Comprehensive testing checklist
-- **[Deployment Guide](./DEPLOYMENT.md)** - Deploy to AWS overview
-- **[Infrastructure Guide](./infrastructure/README.md)** - AWS infrastructure details
+- ⚡ **Activity Switching**: < 500ms
+- 🚀 **WebSocket Latency**: < 100ms
+- 📱 **Mobile Load Time**: < 3s
+- 👥 **Concurrent Users**: 50+ tested
+- 🌍 **Global Reach**: CloudFront CDN
 
-### Specification Documents
-- **[Design Document](./.kiro/specs/event-activities-platform/design.md)** - System architecture and design
-- **[Requirements Document](./.kiro/specs/event-activities-platform/requirements.md)** - Feature requirements
-- **[Tasks Document](./.kiro/specs/event-activities-platform/tasks.md)** - Implementation tasks
+---
 
-### Testing Scripts
-- `./scripts/deploy-phase2.sh` - 🚀 Deploy all Phase 2 features
-- `./scripts/test-phase2-features.sh` - Test Phase 2 features on AWS
-- `./scripts/test-local-flow.sh` - Automated local integration tests
-- `./scripts/test-aws-deployment.sh` - Automated AWS deployment verification
-- `./scripts/migrate-to-activities.ts` - Migrate data to activities model
-- `./scripts/verify-migration.ts` - Verify migration success
-
-## Technology Stack
+## 🛠️ Technology Stack
 
 ### Frontend
-- React 18
-- TypeScript
-- Vite
-- Socket.io Client
-- React Router
-- Tailwind CSS (if configured)
+- **React 18** - Modern UI library
+- **TypeScript** - Type-safe development
+- **Vite** - Lightning-fast build tool
+- **Socket.io Client** - Real-time communication
+- **React Router** - Client-side routing
+- **Framer Motion** - Smooth animations
+- **Tailwind CSS** - Utility-first styling
 
 ### Backend
-- Node.js
-- Express
-- Socket.io
-- TypeScript
-- AWS SDK (DynamoDB)
+- **Node.js** - JavaScript runtime
+- **Express** - Web framework
+- **Socket.io** - WebSocket server
+- **TypeScript** - Type-safe backend
+- **AWS SDK** - Cloud services integration
 
 ### Infrastructure
-- AWS DynamoDB
-- AWS ECS Fargate
-- AWS S3 + CloudFront
-- AWS Application Load Balancer
-- AWS CDK (Infrastructure as Code)
+- **AWS DynamoDB** - NoSQL database
+- **AWS ECS Fargate** - Containerized backend
+- **AWS S3** - Static file hosting
+- **AWS CloudFront** - Global CDN
+- **AWS ALB** - Load balancing
+- **AWS CDK** - Infrastructure as Code
 
-## Development Workflow
+---
+
+## 📚 Documentation
+
+### Getting Started
+- 📖 **[START_HERE.md](./START_HERE.md)** - Quick 3-step setup guide
+- 🔧 **[LOCAL_DEVELOPMENT.md](./LOCAL_DEVELOPMENT.md)** - Detailed local setup
+
+### API Documentation
+- 📚 **[API Documentation Index](./API_DOCUMENTATION_INDEX.md)** - Complete guide
+- 🔌 **[API Reference](./API_DOCUMENTATION.md)** - REST API endpoints
+- ⚡ **[WebSocket Events](./WEBSOCKET_EVENTS_REFERENCE.md)** - Real-time events
+- 📋 **[API Quick Reference](./API_QUICK_REFERENCE.md)** - Quick lookups
+
+### Deployment
+- 🚀 **[Phase 2 Quick Start](./PHASE2_QUICK_START.md)** - Deploy in 3 steps
+- ☁️ **[Deployment Guide](./DEPLOYMENT.md)** - AWS deployment
+- 🏗️ **[Infrastructure Guide](./infrastructure/README.md)** - CDK details
+
+### Migration & Testing
+- 🔄 **[Migration Guide](./MIGRATION_GUIDE.md)** - Migrate existing data
+- ✅ **[Deployment Verification](./DEPLOYMENT_VERIFICATION.md)** - Testing checklist
+- 🧪 **[Integration Tests](./INTEGRATION_TESTS_SUMMARY.md)** - Test suite
+
+---
+
+## 💻 Development
+
+### Project Structure
+
+```
+eventbox/
+├── frontend/              # React + Vite frontend
+│   ├── src/
+│   │   ├── components/   # Reusable UI components
+│   │   ├── pages/        # Page components
+│   │   ├── contexts/     # React contexts
+│   │   ├── hooks/        # Custom hooks
+│   │   └── types/        # TypeScript types
+│   └── public/           # Static assets
+│
+├── backend/              # Node.js + Express backend
+│   ├── src/
+│   │   ├── routes/       # API endpoints
+│   │   ├── services/     # Business logic
+│   │   ├── db/           # Database repositories
+│   │   └── types/        # TypeScript types
+│   └── __tests__/        # Test files
+│
+├── infrastructure/       # AWS CDK infrastructure
+│   └── lib/              # CDK stack definitions
+│
+├── scripts/              # Utility scripts
+│   ├── deploy-phase2.sh  # Deployment script
+│   └── test-*.sh         # Testing scripts
+│
+└── docker-compose.yml    # Local DynamoDB setup
+```
+
+### Development Workflow
 
 1. **Create an Event**
-   - Open http://localhost:5173
-   - Click "Create Event"
-   - Enter event name and details
-   - Click "Create Event"
+   ```
+   Open http://localhost:5173
+   → Click "Create Event"
+   → Enter event details
+   → Click "Create Event"
+   ```
 
 2. **Add Activities**
-   - Click "Add Activity" in your event
-   - Choose activity type (Quiz, Poll, or Raffle)
-   - Configure the activity:
-     - **Quiz**: Add questions with multiple choice options
-     - **Poll**: Set question and voting options
-     - **Raffle**: Set prize description and entry method
+   ```
+   → Click "Add Activity"
+   → Choose type (Quiz/Poll/Raffle)
+   → Configure activity
+   → Save
+   ```
 
 3. **Join as Participant**
-   - Copy the join code (6-digit PIN)
-   - Open in a new browser window/tab
-   - Enter the join code and your nickname
+   ```
+   → Copy 6-digit PIN
+   → Open new browser window
+   → Enter PIN and nickname
+   → Join event
+   ```
 
 4. **Run Activities**
-   - Activate an activity from the control panel
-   - Participants see the activity automatically
-   - Switch between activities seamlessly
-   - See real-time responses and results!
+   ```
+   → Activate activity from control panel
+   → Participants see it automatically
+   → Switch activities seamlessly
+   → View real-time results
+   ```
 
-## Useful Commands
+### Useful Commands
 
 ```bash
 # Development
 npm run dev                    # Start everything (recommended)
-npm run dev:frontend           # Start frontend only
-npm run dev:backend            # Start backend only
+npm run dev:frontend           # Frontend only
+npm run dev:backend            # Backend only
 
 # Database
 npm run db:start               # Start local DynamoDB
-npm run db:stop                # Stop local DynamoDB
-npm run db:admin               # Open DynamoDB Admin UI
+npm run db:stop                # Stop DynamoDB
+npm run db:admin               # Open admin UI
 npm run setup:local-db         # Create tables
-npm run setup:local-db:recreate # Recreate tables (deletes data)
 
 # Building
-npm run build:frontend         # Build frontend for production
-npm run build:backend          # Build backend for production
+npm run build:frontend         # Build frontend
+npm run build:backend          # Build backend
 
-# Deployment (AWS)
-npm run deploy:infrastructure  # Deploy AWS infrastructure
-npm run deploy:backend         # Deploy backend to ECS
-npm run deploy:frontend        # Deploy frontend to S3/CloudFront
+# Deployment
+npm run deploy:infrastructure  # Deploy AWS infra
+npm run deploy:backend         # Deploy backend
+npm run deploy:frontend        # Deploy frontend
 
 # Code Quality
-npm run lint                   # Lint all workspaces
-npm run format                 # Format code with Prettier
+npm run lint                   # Lint code
+npm run format                 # Format with Prettier
+npm run test                   # Run tests
 ```
 
-## Troubleshooting
+---
 
-### Docker not running
-Make sure Docker Desktop is running before starting the app.
+## 🚀 Deployment
 
-### Port already in use
-- Backend (3001): Change `PORT` in `backend/.env.local`
-- Frontend (5173): Vite will automatically try the next available port
-
-### WebSocket connection failed
-1. Make sure backend is running on port 3001
-2. Check browser console for errors
-3. Try refreshing the page
-
-### Tables not created
-```bash
-npm run setup:local-db:recreate
-```
-
-## Deploying to AWS
-
-### Phase 2 Deployment (Recommended)
-
-Deploy all Phase 2 Kahoot-style features:
+### Quick Deploy to AWS
 
 ```bash
 # Deploy everything (infrastructure + backend + frontend)
@@ -259,37 +389,121 @@ Deploy all Phase 2 Kahoot-style features:
 ./scripts/test-phase2-features.sh production
 ```
 
-See **[PHASE2_QUICK_START.md](./PHASE2_QUICK_START.md)** for the 3-step quick start guide!
-
 ### Manual Deployment
 
-See the [Deployment Guide](./DEPLOYMENT.md) for detailed instructions on deploying to AWS.
-
-Quick deploy:
 ```bash
+# 1. Deploy infrastructure
 cd infrastructure
 npm run deploy
+
+# 2. Deploy backend
+cd ../backend
+npm run build
+./deploy-backend.sh
+
+# 3. Deploy frontend
+cd ../frontend
+npm run build
+aws s3 sync dist/ s3://your-bucket --delete
+aws cloudfront create-invalidation --distribution-id YOUR_ID --paths "/*"
 ```
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test locally
-5. Submit a pull request
-
-## License
-
-MIT
-
-## Support
-
-For detailed documentation:
-- Local Development: [LOCAL_DEVELOPMENT.md](./LOCAL_DEVELOPMENT.md)
-- AWS Deployment: [DEPLOYMENT.md](./DEPLOYMENT.md)
-- Infrastructure: [infrastructure/README.md](./infrastructure/README.md)
+**Detailed Instructions:** See [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ---
 
-Built with ❤️ using React, Node.js, and AWS
+## 🎯 Use Cases
+
+### Corporate Events
+- **Town Halls**: Engage employees with live polls and Q&A
+- **Training Sessions**: Test knowledge with interactive quizzes
+- **Team Building**: Run raffles and icebreaker activities
+
+### Education
+- **Lectures**: Check understanding with quick polls
+- **Workshops**: Interactive quizzes for learning assessment
+- **Student Events**: Raffles and engagement activities
+
+### Conferences
+- **Keynotes**: Keep audiences engaged between speakers
+- **Breakout Sessions**: Interactive polls for feedback
+- **Networking**: Icebreakers and team formation
+
+### Virtual Events
+- **Webinars**: Combat Zoom fatigue with interactive elements
+- **Online Meetups**: Build community with shared activities
+- **Remote Training**: Assess learning with quizzes
+
+---
+
+## 🔮 Roadmap
+
+### Planned Features
+
+#### **Team Activities**
+- 🤝 **Team Split**: Divide audience into collaborative groups
+- 🎯 **Team Challenges**: Group-based competitions
+- 📊 **Team Leaderboards**: Track team performance
+
+#### **Advanced Engagement**
+- 🎲 **Pick One**: Random audience member selection
+- 🤖 **Random Quiz**: AI-generated questions on-the-fly
+- 🧊 **Icebreakers**: Quick warm-up activities
+- 💬 **Q&A Sessions**: Moderated question collection
+
+#### **Analytics & Insights**
+- 📈 **Engagement Metrics**: Track participation rates
+- 📊 **Response Analytics**: Analyze answer patterns
+- 📉 **Trend Analysis**: Historical engagement data
+- 📧 **Export Reports**: Download results and analytics
+
+#### **Platform Enhancements**
+- 🎨 **Custom Branding**: White-label options
+- 🌍 **Multi-language**: Internationalization support
+- 🔐 **Advanced Security**: SSO and role-based access
+- 📱 **Native Apps**: iOS and Android applications
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](./LICENSE) for details
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with [Kiro AI](https://kiro.ai) - AI-assisted development
+- Powered by [AWS](https://aws.amazon.com) - Cloud infrastructure
+- Inspired by the need for better event engagement tools
+
+---
+
+## 🌟 Why EventBox?
+
+### **For Organizers**
+- ✅ One platform for all engagement needs
+- ✅ Seamless activity switching
+- ✅ Real-time audience insights
+- ✅ Professional, polished experience
+
+### **For Participants**
+- ✅ No app downloads required
+- ✅ Works on any device
+- ✅ Smooth, intuitive interface
+- ✅ Instant feedback and results
+
+### **For Developers**
+- ✅ Modern tech stack
+- ✅ Clean, maintainable code
+- ✅ Comprehensive documentation
+- ✅ Easy to extend and customize
+
+---
+
+<div align="center">
+
+**Built with ❤️ using React, Node.js, and AWS**
+
+[Live Demo](https://your-demo-url.com) • [Documentation](./API_DOCUMENTATION_INDEX.md) • [GitHub](https://github.com/your-repo)
+
+</div>

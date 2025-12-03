@@ -1,172 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Activity, QuizActivity, PollActivity, RaffleActivity } from '../types/models';
 import { useTheme } from '../contexts/ThemeContext';
-import { useWebSocket } from '../contexts/WebSocketContext';
-
-// Participants Leaderboard Component
-interface ParticipantsLeaderboardProps {
-  eventId: string;
-  activeActivity: Activity | null;
-}
-
-interface ParticipantScore {
-  participantId: string;
-  name: string;
-  score: number;
-  totalAnswerTime: number;
-  rank: number;
-  correctAnswers: number;
-  totalQuestions: number;
-}
-
-function ParticipantsLeaderboard({ eventId, activeActivity }: ParticipantsLeaderboardProps) {
-  const { colors } = useTheme();
-  const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
-  const [participants, setParticipants] = useState<ParticipantScore[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchParticipants = async () => {
-      try {
-        if (activeActivity && activeActivity.type === 'quiz') {
-          // Fetch leaderboard for quiz activities
-          const response = await fetch(`${apiBaseUrl}/activities/${activeActivity.activityId}/leaderboard`);
-          if (response.ok) {
-            const leaderboard = await response.json();
-            setParticipants(leaderboard || []);
-          }
-        } else {
-          // Fetch general participants for non-quiz activities
-          const response = await fetch(`${apiBaseUrl}/events/${eventId}/participants`);
-          if (response.ok) {
-            const data = await response.json();
-            const participantList = data.participants || [];
-            // Convert to leaderboard format
-            const formattedParticipants = participantList.map((p: any, index: number) => ({
-              participantId: p.participantId || p.id,
-              name: p.name || p.participantName || `Participant ${index + 1}`,
-              score: 0,
-              totalAnswerTime: 0,
-              rank: index + 1,
-              correctAnswers: 0,
-              totalQuestions: 0
-            }));
-            setParticipants(formattedParticipants);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching participants:', error);
-        setParticipants([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchParticipants();
-    const interval = setInterval(fetchParticipants, 3000); // Refresh every 3 seconds
-    return () => clearInterval(interval);
-  }, [eventId, activeActivity, apiBaseUrl]);
-
-  return (
-    <div className="bg-white/5 rounded-lg p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold" style={{ color: colors.textPrimary }}>
-          🏆 Participants Leaderboard
-        </h3>
-        <div className="text-sm" style={{ color: colors.textSecondary }}>
-          {participants.length} participants
-        </div>
-      </div>
-      
-      {loading ? (
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto"></div>
-          <p className="text-sm mt-2" style={{ color: colors.textSecondary }}>Loading participants...</p>
-        </div>
-      ) : participants.length === 0 ? (
-        <div className="text-center py-8">
-          <div className="text-4xl mb-2">👥</div>
-          <p style={{ color: colors.textSecondary }}>No participants yet</p>
-          <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>
-            Participants will appear here when they join the event
-          </p>
-        </div>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-white/10">
-                <th className="text-left py-3 px-2" style={{ color: colors.textSecondary }}>Rank</th>
-                <th className="text-left py-3 px-2" style={{ color: colors.textSecondary }}>Name</th>
-                {activeActivity?.type === 'quiz' && (
-                  <>
-                    <th className="text-right py-3 px-2" style={{ color: colors.textSecondary }}>Score</th>
-                    <th className="text-right py-3 px-2" style={{ color: colors.textSecondary }}>Correct</th>
-                    <th className="text-right py-3 px-2" style={{ color: colors.textSecondary }}>Time</th>
-                  </>
-                )}
-                <th className="text-right py-3 px-2" style={{ color: colors.textSecondary }}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {participants.map((participant, index) => (
-                <tr 
-                  key={participant.participantId}
-                  className={`border-b border-white/5 hover:bg-white/5 transition-colors ${
-                    index < 3 ? 'bg-gradient-to-r from-yellow-500/10 to-transparent' : ''
-                  }`}
-                >
-                  <td className="py-3 px-2">
-                    <div className="flex items-center gap-2">
-                      {index === 0 && <span className="text-lg">🥇</span>}
-                      {index === 1 && <span className="text-lg">🥈</span>}
-                      {index === 2 && <span className="text-lg">🥉</span>}
-                      <span className="font-medium" style={{ color: colors.textPrimary }}>
-                        #{participant.rank}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-3 px-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">👤</span>
-                      <span className="font-medium" style={{ color: colors.textPrimary }}>
-                        {participant.name}
-                      </span>
-                    </div>
-                  </td>
-                  {activeActivity?.type === 'quiz' && (
-                    <>
-                      <td className="py-3 px-2 text-right">
-                        <span className="font-bold text-lg" style={{ color: colors.accent }}>
-                          {participant.score}
-                        </span>
-                      </td>
-                      <td className="py-3 px-2 text-right">
-                        <span style={{ color: colors.textPrimary }}>
-                          {participant.correctAnswers}/{participant.totalQuestions}
-                        </span>
-                      </td>
-                      <td className="py-3 px-2 text-right">
-                        <span className="text-sm" style={{ color: colors.textSecondary }}>
-                          {(participant.totalAnswerTime / 1000).toFixed(1)}s
-                        </span>
-                      </td>
-                    </>
-                  )}
-                  <td className="py-3 px-2 text-right">
-                    <span className="px-2 py-1 rounded-full text-xs bg-green-500/20 text-green-400">
-                      Online
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  );
-}
 
 // Raffle Participants Table Component
 interface RaffleParticipantsTableProps {
@@ -258,7 +92,6 @@ export default function OrganizerControlDashboard({
   organizerId,
 }: OrganizerControlDashboardProps) {
   const { colors } = useTheme();
-  const { emit } = useWebSocket();
   const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -736,9 +569,6 @@ export default function OrganizerControlDashboard({
           </p>
         </div>
       )}
-
-      {/* Participants Leaderboard */}
-      <ParticipantsLeaderboard eventId={eventId} activeActivity={activeActivity} />
     </div>
   );
 }

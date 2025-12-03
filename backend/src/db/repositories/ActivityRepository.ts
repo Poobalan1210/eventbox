@@ -3,12 +3,12 @@
  */
 import {
   PutCommand,
-  GetCommand,
   QueryCommand,
   UpdateCommand,
   DeleteCommand,
+  ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { docClient, TABLE_NAMES } from '../client';
+import { docClient, TABLE_NAMES } from '../client.js';
 import { Activity, ActivityStatus } from '../../types/models';
 
 /**
@@ -78,18 +78,24 @@ export class ActivityRepository {
 
   /**
    * Get an activity by ID
+   * Note: Since the table has a composite key (eventId, activityId), we need to scan
+   * with a filter. This is less efficient but works without requiring eventId.
+   * In production, consider adding an activityId GSI for better performance.
    */
   async findById(activityId: string): Promise<Activity | null> {
     try {
-      const command = new GetCommand({
+      // Use scan with filter since we don't have eventId
+      // Note: Don't use Limit with FilterExpression as it limits the scan, not the results
+      const command = new ScanCommand({
         TableName: TABLE_NAMES.ACTIVITIES,
-        Key: {
-          activityId: activityId,
+        FilterExpression: 'activityId = :activityId',
+        ExpressionAttributeValues: {
+          ':activityId': activityId,
         },
       });
 
       const result = await retryOperation(() => docClient.send(command));
-      return result.Item ? (result.Item as Activity) : null;
+      return result.Items && result.Items.length > 0 ? (result.Items[0] as Activity) : null;
     } catch (error) {
       console.error('Error getting activity:', error);
       throw error;
@@ -123,9 +129,16 @@ export class ActivityRepository {
 
   /**
    * Update activity with partial data
+   * Note: Requires eventId since the table has a composite key
    */
   async update(activityId: string, updates: Partial<Activity>): Promise<Activity> {
     try {
+      // First get the activity to find its eventId
+      const current = await this.findById(activityId);
+      if (!current) {
+        throw new Error(`Activity not found: ${activityId}`);
+      }
+
       // Build update expression dynamically
       const updateExpressions: string[] = [];
       const expressionAttributeNames: Record<string, string> = {};
@@ -136,7 +149,7 @@ export class ActivityRepository {
 
       let index = 0;
       for (const [key, value] of Object.entries(updates)) {
-        if (key !== 'activityId' && value !== undefined) {
+        if (key !== 'activityId' && key !== 'eventId' && value !== undefined) {
           const attrName = `#attr${index}`;
           const attrValue = `:val${index}`;
           updateExpressions.push(`${attrName} = ${attrValue}`);
@@ -148,16 +161,13 @@ export class ActivityRepository {
 
       if (updateExpressions.length === 0) {
         // Nothing to update, just return the current activity
-        const current = await this.findById(activityId);
-        if (!current) {
-          throw new Error(`Activity not found: ${activityId}`);
-        }
         return current;
       }
 
       const command = new UpdateCommand({
         TableName: TABLE_NAMES.ACTIVITIES,
         Key: {
+          eventId: current.eventId,
           activityId: activityId,
         },
         UpdateExpression: `SET ${updateExpressions.join(', ')}`,
@@ -176,12 +186,20 @@ export class ActivityRepository {
 
   /**
    * Delete an activity
+   * Note: Requires eventId since the table has a composite key
    */
   async delete(activityId: string): Promise<void> {
     try {
+      // First get the activity to find its eventId
+      const activity = await this.findById(activityId);
+      if (!activity) {
+        throw new Error(`Activity not found: ${activityId}`);
+      }
+
       const command = new DeleteCommand({
         TableName: TABLE_NAMES.ACTIVITIES,
         Key: {
+          eventId: activity.eventId,
           activityId: activityId,
         },
       });
@@ -195,12 +213,20 @@ export class ActivityRepository {
 
   /**
    * Update activity status
+   * Note: Requires eventId since the table has a composite key
    */
   async setStatus(activityId: string, status: ActivityStatus): Promise<void> {
     try {
+      // First get the activity to find its eventId
+      const activity = await this.findById(activityId);
+      if (!activity) {
+        throw new Error(`Activity not found: ${activityId}`);
+      }
+
       const command = new UpdateCommand({
         TableName: TABLE_NAMES.ACTIVITIES,
         Key: {
+          eventId: activity.eventId,
           activityId: activityId,
         },
         UpdateExpression: 'SET #status = :status, lastModified = :lastModified',

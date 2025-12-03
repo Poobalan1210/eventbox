@@ -73,19 +73,8 @@ export default function PollParticipantView({
             setAllowMultipleVotes(pollActivity.allowMultipleVotes || false);
             setShowResultsLive(pollActivity.showResultsLive || false);
             
-            // Check if poll is active and get current results if available
-            if (pollActivity.status === 'active' && pollActivity.showResultsLive) {
-              // Fetch current results
-              try {
-                const resultsResponse = await fetch(`${apiBaseUrl}/activities/${activityId}/poll-results`);
-                if (resultsResponse.ok) {
-                  const resultsData = await resultsResponse.json();
-                  setResults(resultsData.results);
-                }
-              } catch (error) {
-                console.log('No current results available');
-              }
-            }
+            // Don't fetch results initially - only show after user votes or poll ends
+            // Results will be updated via WebSocket events
           }
         }
       } catch (error) {
@@ -187,7 +176,9 @@ export default function PollParticipantView({
     }
   };
 
-  const showResults = (showResultsLive && hasVoted) || isPollEnded;
+  // Only show results if poll has ended
+  // Live results during voting are disabled to prevent influencing other voters
+  const showResults = isPollEnded;
 
   console.log('Rendering poll with:', { 
     question, 
@@ -297,8 +288,8 @@ export default function PollParticipantView({
                       </motion.div>
                     )}
                     
-                    {/* Results display */}
-                    {showResults && (
+                    {/* Results display - only show if user has voted or poll ended */}
+                    {showResults && results && (
                       <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}

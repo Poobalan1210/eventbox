@@ -7,7 +7,7 @@ import {
   UpdateCommand,
   GetCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { docClient, TABLE_NAMES } from '../client';
+import { docClient, TABLE_NAMES } from '../client.js';
 import { Participant } from '../../types/models';
 
 export class ParticipantRepository {

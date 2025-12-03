@@ -991,7 +991,8 @@ router.post(
           io,
           activity.eventId,
           activityId,
-          participantId
+          participantId,
+          participantName
         );
       }
 

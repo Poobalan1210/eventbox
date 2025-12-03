@@ -201,6 +201,7 @@ export interface RaffleStartedPayload {
 export interface RaffleEntryConfirmedPayload {
   activityId: string;
   participantId: string;
+  participantName: string;
 }
 
 export interface RaffleDrawingPayload {

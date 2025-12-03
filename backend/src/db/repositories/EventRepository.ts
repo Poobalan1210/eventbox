@@ -1,8 +1,8 @@
 /**
  * EventRepository - Data access layer for Event operations
  */
-import { PutCommand, GetCommand, UpdateCommand, QueryCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { docClient, TABLE_NAMES } from '../client';
+import { PutCommand, GetCommand, UpdateCommand, QueryCommand, ScanCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
+import { docClient, TABLE_NAMES } from '../client.js';
 import { Event, EventStatus, EventVisibility } from '../../types/models';
 
 /**
@@ -317,17 +317,23 @@ export class EventRepository {
       // First, get all activities for this event and delete them
       const activities = await this.listActivities(eventId);
       
-      // Import ActivityRepository to delete activities
-      const { ActivityRepository } = await import('./ActivityRepository');
-      const activityRepo = new ActivityRepository();
+      console.log(`Deleting event ${eventId} with ${activities.length} activities`);
       
-      // Delete all activities (cascade delete)
+      // Delete all activities directly with composite key (more efficient)
       for (const activity of activities) {
-        await activityRepo.delete(activity.activityId);
+        console.log(`Deleting activity ${activity.activityId}`);
+        const deleteActivityCommand = new DeleteCommand({
+          TableName: TABLE_NAMES.ACTIVITIES,
+          Key: {
+            eventId: eventId,
+            activityId: activity.activityId,
+          },
+        });
+        await retryOperation(() => docClient.send(deleteActivityCommand));
       }
       
+      console.log(`Deleting event ${eventId} from Events table`);
       // Then delete the event itself
-      const { DeleteCommand } = await import('@aws-sdk/lib-dynamodb');
       const command = new DeleteCommand({
         TableName: TABLE_NAMES.EVENTS,
         Key: {
@@ -336,6 +342,7 @@ export class EventRepository {
       });
 
       await retryOperation(() => docClient.send(command));
+      console.log(`Successfully deleted event ${eventId}`);
     } catch (error) {
       console.error('Error deleting event:', error);
       throw error;
@@ -388,7 +395,7 @@ export class EventRepository {
   async listActivities(eventId: string): Promise<any[]> {
     try {
       // Import ActivityRepository to query activities
-      const { ActivityRepository } = await import('./ActivityRepository');
+      const { ActivityRepository } = await import('./ActivityRepository.js');
       const activityRepo = new ActivityRepository();
       
       return await activityRepo.findByEventId(eventId);

@@ -6,7 +6,6 @@ import { EventRepository } from '../db/repositories/EventRepository';
 import { ActivityRepository } from '../db/repositories/ActivityRepository';
 import { Event, Activity } from '../types/models';
 import { randomUUID } from 'crypto';
-import QRCode from 'qrcode';
 import { generateUniqueGamePin } from './gamePinService';
 
 export class EventService {

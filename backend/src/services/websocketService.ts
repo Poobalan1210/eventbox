@@ -331,16 +331,18 @@ export class WebSocketService {
     io: TypedServer,
     eventId: string,
     activityId: string,
-    participantId: string
+    participantId: string,
+    participantName: string
   ): Promise<void> {
     try {
       // Broadcast to all participants in the event room
       io.to(eventId).emit('raffle-entry-confirmed', {
         activityId,
         participantId,
+        participantName,
       });
 
-      console.log(`Broadcasted raffle-entry-confirmed for activity ${activityId} in event ${eventId}`);
+      console.log(`Broadcasted raffle-entry-confirmed for participant ${participantName} in activity ${activityId}`);
     } catch (error) {
       console.error('Error broadcasting raffle entry confirmation:', error);
     }
@@ -518,7 +520,7 @@ export class WebSocketService {
   /**
    * Handle quiz start
    */
-  private async handleStartQuiz(
+  public async handleStartQuiz(
     io: TypedServer,
     _socket: TypedSocket,
     payload: StartQuizPayload
@@ -558,7 +560,7 @@ export class WebSocketService {
   /**
    * Handle next question
    */
-  private async handleNextQuestion(
+  public async handleNextQuestion(
     io: TypedServer,
     _socket: TypedSocket,
     payload: NextQuestionPayload
@@ -710,7 +712,7 @@ export class WebSocketService {
   /**
    * Handle quiz end
    */
-  private async handleEndQuiz(
+  public async handleEndQuiz(
     io: TypedServer,
     _socket: TypedSocket,
     payload: EndQuizPayload

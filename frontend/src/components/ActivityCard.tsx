@@ -7,6 +7,7 @@ interface ActivityCardProps {
   onDeactivate: (activityId: string) => void;
   onEdit: (activityId: string) => void;
   onDelete: (activityId: string) => void;
+  onViewResults?: (activityId: string) => void;
 }
 
 export default function ActivityCard({
@@ -16,6 +17,7 @@ export default function ActivityCard({
   onDeactivate,
   onEdit,
   onDelete,
+  onViewResults,
 }: ActivityCardProps) {
   const getActivityIcon = (type: ActivityType): string => {
     switch (type) {
@@ -121,8 +123,16 @@ export default function ActivityCard({
     }
   };
 
+  const handleViewResults = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onViewResults) {
+      onViewResults(activity.activityId);
+    }
+  };
+
   const canActivate = activity.status === 'ready' && !isActive;
   const canDeactivate = isActive;
+  const canViewResults = activity.status === 'completed' && onViewResults;
 
   return (
     <div
@@ -171,6 +181,14 @@ export default function ActivityCard({
               className="flex-1 px-3 py-2 text-sm font-medium text-white bg-orange-600 rounded-md hover:bg-orange-700 transition-colors"
             >
               ⏸️ Deactivate
+            </button>
+          )}
+          {canViewResults && (
+            <button
+              onClick={handleViewResults}
+              className="flex-1 px-3 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 transition-colors"
+            >
+              📊 View Results
             </button>
           )}
           {!isActive && activity.status !== 'completed' && (

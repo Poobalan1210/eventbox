@@ -141,13 +141,14 @@ export default function RaffleParticipantView({
   useEffect(() => {
     const cleanup = on('raffle-entry-confirmed', (payload: RaffleEntryConfirmedPayload) => {
       console.log('Raffle entry confirmed:', payload);
-      if (payload.activityId === activityId) {
+      // Only mark as entered if this is for the current participant
+      if (payload.activityId === activityId && payload.participantName === participantName) {
         setHasEntered(true);
       }
     });
 
     return cleanup;
-  }, [on, activityId]);
+  }, [on, activityId, participantName]);
 
   // Listen for raffle-drawing event
   useEffect(() => {
@@ -548,18 +549,6 @@ export default function RaffleParticipantView({
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Debug: Manual Entry Button for Testing */}
-          {!hasEntered && !showWinners && !isDrawing && (
-            <div className="mb-4">
-              <button
-                onClick={autoEnterRaffle}
-                className="px-4 py-2 bg-yellow-600 text-white rounded-lg font-medium"
-              >
-                🔧 Debug: Enter Raffle
-              </button>
-            </div>
-          )}
 
           {/* Entry Button (Manual Entry Mode Only) */}
           {!hasEntered && !showWinners && !isDrawing && entryMethod === 'manual' && (

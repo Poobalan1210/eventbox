@@ -11,6 +11,7 @@ import QuizManagement from './pages/QuizManagement';
 import ParticipantView from './pages/ParticipantView';
 import EventActivities from './pages/EventActivities';
 import OrganizerControlPage from './pages/OrganizerControlPage';
+import ActivityResults from './pages/ActivityResults';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
                   <Route path="/organizer/:eventId" element={<QuizManagement />} />
                   <Route path="/events/:eventId/activities" element={<EventActivities />} />
                   <Route path="/events/:eventId/control" element={<OrganizerControlPage />} />
+                  <Route path="/activities/:activityId/results" element={<ActivityResults />} />
                   <Route path="/join/:eventId" element={<ParticipantView />} />
                 </Routes>
               </ErrorBoundary>

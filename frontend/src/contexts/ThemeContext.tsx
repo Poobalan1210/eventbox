@@ -1,8 +1,9 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useEffect, ReactNode } from 'react';
 
 export type ThemeType = 'space';
 
 export interface ThemeColors {
+  background: string;
   navBg: string;
   navBgDark: string;
   navText: string;
@@ -28,6 +29,7 @@ const themeBackgrounds = {
 
 const themeColors: Record<ThemeType, ThemeColors> = {
   space: {
+    background: '#000000',
     navBg: 'rgba(15, 12, 41, 0.8)',
     navBgDark: 'rgba(9, 10, 15, 0.9)',
     navText: 'rgba(255, 255, 255, 0.9)',

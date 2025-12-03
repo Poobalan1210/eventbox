@@ -6,7 +6,7 @@ import {
   QueryCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { docClient, TABLE_NAMES } from '../client';
+import { docClient, TABLE_NAMES } from '../client.js';
 import { RaffleEntry } from '../../types/models';
 
 /**
@@ -120,9 +120,19 @@ export class RaffleRepository {
    */
   async setWinners(raffleId: string, winnerIds: string[]): Promise<void> {
     try {
+      // First, get the activity to find its eventId (needed for composite key)
+      const { ActivityRepository } = await import('./ActivityRepository.js');
+      const activityRepo = new ActivityRepository();
+      const activity = await activityRepo.findById(raffleId);
+      
+      if (!activity) {
+        throw new Error(`Activity not found: ${raffleId}`);
+      }
+
       const command = new UpdateCommand({
         TableName: TABLE_NAMES.ACTIVITIES,
         Key: {
+          eventId: activity.eventId,
           activityId: raffleId,
         },
         UpdateExpression: 'SET winners = :winners, lastModified = :lastModified',

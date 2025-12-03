@@ -39,13 +39,15 @@ describe('Raffle WebSocket Handlers', () => {
       const eventId = 'event-123';
       const activityId = 'activity-456';
       const participantId = 'participant-789';
+      const participantName = 'John Doe';
 
-      await wsService.broadcastRaffleEntryConfirmed(mockIo, eventId, activityId, participantId);
+      await wsService.broadcastRaffleEntryConfirmed(mockIo, eventId, activityId, participantId, participantName);
 
       expect(mockIo.to).toHaveBeenCalledWith(eventId);
       expect(mockIo.emit).toHaveBeenCalledWith('raffle-entry-confirmed', {
         activityId,
         participantId,
+        participantName,
       });
     });
   });

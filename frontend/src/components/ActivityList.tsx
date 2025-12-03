@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Activity, ActivityType } from '../types/models';
 import ActivityCard from './ActivityCard';
 import AddActivityDialog from './AddActivityDialog';
@@ -47,6 +48,7 @@ interface ActivityListProps {
 }
 
 export default function ActivityList({ eventId, organizerId, onActivityEdit }: ActivityListProps) {
+  const navigate = useNavigate();
   const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -215,6 +217,11 @@ export default function ActivityList({ eventId, organizerId, onActivityEdit }: A
     }
   };
 
+  // View activity results
+  const handleViewResults = (activityId: string) => {
+    navigate(`/activities/${activityId}/results`);
+  };
+
   // Edit activity
   const handleEdit = (activityId: string) => {
     if (onActivityEdit) {
@@ -361,6 +368,7 @@ export default function ActivityList({ eventId, organizerId, onActivityEdit }: A
               onDeactivate={handleDeactivate}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onViewResults={handleViewResults}
             />
           ))}
         </div>
